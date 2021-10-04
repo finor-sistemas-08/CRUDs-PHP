@@ -17,7 +17,7 @@
             <tr>
                 <td width="80">Carnet de Identidad</td>
                 <td>
-                    <input name="txtCi" type="text" value="<?php echo $_GET['ci']; ?>" />
+                    <input name="txtCi" type="number" value=<?php echo $_GET['ci']; ?> />
                 </td>
             </tr>
             <tr>
@@ -41,25 +41,52 @@
             <tr>
                 <td width="80">Sueldo</td>
                 <td width="225">
-                    <input name="txtSueldo" type="text" value="<?php echo $_GET['sueldo']; ?>" />
+                    <input name="txtSueldo" type="number" value=<?php echo $_GET['sueldo']; ?> />
                 </td>
             </tr>
             <tr>
+                <td width="80">Tipo</td>
+                <td width="225">
+                    <select name="cbxTipo" id="" required>
+                        <option value="S" <?php if ($_GET['tipo'] == "S") {
+                                                echo "selected";
+                                            } ?>> Secretaria</option>
+                        <option value="T" <?php if ($_GET['tipo'] == "T") {
+                                                echo "selected";
+                                            } ?>> Técnico</option>
+                    </select>
+                </td>
+            </tr>
+            <?php
+            // Intentando mostrar dinámicamente los textbox en función del tipo de empleado
+            // if ($_POST['cbxTipo'] == "S") {
+            //     $vel = $_GET['vel'];
+            //     echo "<tr>
+            //             <td width=\"80\">Velocidad de Typeo</td>
+            //             <td width=\"225\">
+            //                 <input name=\"txtVel\" type=\"number\" value=$vel />
+            //             </td>
+            //         </tr>";
+            // } else {
+            //     $grado = $_GET['grado'];
+            //     echo "<tr>
+            //         <td width=\"80\">Grado</td>
+            //         <td width=\"225\">
+            //             <input name=\"txtGrado\" type=\"text\" value=\"$grado\" />
+            //         </td>
+            //     </tr>";
+            // }
+            ?>
+            <tr>
                 <td width="80">Velocidad de Typeo</td>
                 <td width="225">
-                    <input name="txtVel" type="text" value="<?php echo $_GET['vel']; ?>" />
+                    <input name="txtVel" type="number" value=<?php echo $_GET['vel']; ?> />
                 </td>
             </tr>
             <tr>
                 <td width="80">Grado</td>
                 <td width="225">
                     <input name="txtGrado" type="text" value="<?php echo $_GET['grado']; ?>" />
-                </td>
-            </tr>
-            <tr>
-                <td width="80">Tipo</td>
-                <td width="225">
-                    <input name="txtTipo" type="text" value="<?php echo $_GET['tipo']; ?>" />
                 </td>
             </tr>
 
@@ -86,12 +113,19 @@
             $obj->setNombres($_POST['txtNombres']);
             $obj->setPaterno($_POST['txtPaterno']);
             $obj->setMaterno($_POST['txtMaterno']);
-            $obj->setSueldo($_POST['txtSueldo']);
-            if ($_POST['txtVel'] > 0) {
-                $obj->setVelTypeo($_POST['txtVel']);
+            if ($_POST['txtSueldo'] > 0) {
+                $obj->setSueldo($_POST['txtSueldo']);
             }
-            $obj->setGrado($_POST['txtGrado']);
-            $obj->setTipo($_POST['txtTipo']);
+
+            $obj->setTipo($_POST['cbxTipo']);
+            if ($_POST['cbxTipo'] == "T") {
+                $obj->setGrado($_POST['txtGrado']);
+            } else {
+                if ($_POST['txtVel'] > 0) {
+                    $obj->setVelTypeo($_POST['txtVel']);
+                }
+            }
+
             if ($obj->guardar())
                 echo "Empleado Guardado..!!!";
             else
@@ -108,10 +142,17 @@
             $obj->setNombres($_POST['txtNombres']);
             $obj->setPaterno($_POST['txtPaterno']);
             $obj->setMaterno($_POST['txtMaterno']);
-            $obj->setSueldo($_POST['txtSueldo']);
-            $obj->setVelTypeo($_POST['txtVel']);
-            $obj->setGrado($_POST['txtGrado']);
-            $obj->setTipo($_POST['txtTipo']);
+            if ($_POST['txtSueldo'] > 0) {
+                $obj->setSueldo($_POST['txtSueldo']);
+            }
+            $obj->setTipo($_POST['cbxTipo']);
+            if ($_POST['cbxTipo'] == "T") {
+                $obj->setGrado($_POST['txtGrado']);
+            } else {
+                if ($_POST['txtVel'] > 0) {
+                    $obj->setVelTypeo($_POST['txtVel']);
+                }
+            }
             if ($obj->modificar())
                 echo "Empleado modificado..!!!";
             else
